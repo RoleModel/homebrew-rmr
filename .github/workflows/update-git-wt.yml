@@ -1,0 +1,44 @@
+name: Update git-wt
+
+# Pulls the newest git-wt release into Formula/git-wt.rb. git-wt lives under
+# another account, so this repo updates itself with its own token rather than
+# git-wt holding credentials to push here.
+
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Point the formula at the latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh release view --repo OutlawAndy/git-wt --json tagName --jq .tagName)
+          if grep -q "/tags/$tag.tar.gz" Formula/git-wt.rb; then
+            echo "Already at $tag"
+            exit 0
+          fi
+
+          sha=$(curl -fsSL "https://github.com/OutlawAndy/git-wt/archive/refs/tags/$tag.tar.gz" | sha256sum | cut -d' ' -f1)
+          sed -i -E \
+            -e "s|/tags/v[^/\"]+\.tar\.gz|/tags/$tag.tar.gz|" \
+            -e "s|sha256 \"[0-9a-f]{64}\"|sha256 \"$sha\"|" \
+            Formula/git-wt.rb
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -am "git-wt $tag"
+          git push
