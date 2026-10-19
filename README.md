@@ -13,6 +13,12 @@ tap "rolemodel/rmr"
 brew "<formula>"
 ```
 
+## Formulae
+
+| formula | is |
+|---|---|
+| `git-wt` | typed, provisioned git worktrees for Rails apps ([source](https://github.com/OutlawAndy/git-wt)) |
+
 ## Documentation
 
 `brew help`, `man brew` or check [Homebrew's documentation](https://docs.brew.sh).
