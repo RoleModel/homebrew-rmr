@@ -1,8 +1,8 @@
 class GitWt < Formula
   desc "Typed, provisioned git worktrees for Rails apps"
   homepage "https://github.com/OutlawAndy/git-wt"
-  url "https://github.com/OutlawAndy/git-wt/archive/refs/tags/v0.2.1.tar.gz"
-  sha256 "ceac083bf92d3eb2f244637fe508d60defb4ab0549475ac6b60aa54289148e9d"
+  url "https://github.com/OutlawAndy/git-wt/archive/refs/tags/v0.3.0.tar.gz"
+  sha256 "c0e00f32a328f218bac3fd22cd968fa2af262071951dfc31832dce59ef3e6882"
   license "MIT"
 
   def install
